@@ -31,10 +31,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
 
-       // readListaEventoFromDisk();
+        readListaEventoFromDisk();
     }
 
-  /*  @Override
+  @Override
     protected void onResume() {
         super.onResume();
 
@@ -90,7 +90,7 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
     }
-*/
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
