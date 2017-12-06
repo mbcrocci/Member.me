@@ -2,7 +2,9 @@ package pt.isec.gps1718_g15.memberme;
 
 import android.widget.DatePicker;
 
-public class Evento {
+import java.io.Serializable;
+
+public class Evento implements Serializable {
     String name;
     int startingHour;
     int endingHour;
