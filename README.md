@@ -7,7 +7,7 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 # Autores
 - Maurizio Crocci (mbcrocci@gmail.com)
 - Pedro Oliveira (a21230149@isec.pt)
-- A
+- André Correia (andrepncorreia@gmail.com)
 - C
 - Hugo Silva (jhssilva96@gmail.com)
 
