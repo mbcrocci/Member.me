@@ -1,9 +1,14 @@
 package pt.isec.gps1718_g15.memberme;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,10 +30,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        readListaEventoFromDisk();
+
+       // readListaEventoFromDisk();
     }
 
-    @Override
+  /*  @Override
     protected void onResume() {
         super.onResume();
 
@@ -84,10 +90,26 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
     }
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_bar, menu);
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater mi = getMenuInflater(); // para criar o menu
+        mi.inflate(R.menu.menu_bar,menu);// ir buscar o menu do xml
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+
+        if(item.getItemId() == R.id.next)
+        {
+            Intent intent = new Intent(this,calActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 }
