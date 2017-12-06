@@ -1,4 +1,4 @@
-# ['Member.me](https://sites.google.com/view/lei-gps1718-g15/)
+﻿# ['Member.me](https://sites.google.com/view/lei-gps1718-g15/)
 Trabalho realizado no âmbito da disciplina Gestão de Projetos de Software no ano letivo de 2017/2018.
 
 # Objectivo
@@ -6,7 +6,7 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 
 # Autores
 - Maurizio Crocci (mbcrocci@gmail.com)
-- P
+- Pedro Oliveira (a21230149@isec.pt)
 - A
 - C
 - H
