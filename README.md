@@ -8,7 +8,7 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 - Maurizio Crocci (mbcrocci@gmail.com)
 - Pedro Oliveira (a21230149@isec.pt)
 - André Correia (andrepncorreia@gmail.com)
-- C
+- Carlos Santana (candresantana1@gmail.com)
 - Hugo Silva (jhssilva96@gmail.com)
 
 # Links úteis
