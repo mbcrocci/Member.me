@@ -8,11 +8,11 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 - Maurizio Crocci (mbcrocci@gmail.com)
 - Pedro Oliveira (a21230149@isec.pt)
 - André Correia (andrepncorreia@gmail.com)
-- C
+- Carlos Santana (candresantana1@gmail.com)
 - Hugo Silva (jhssilva96@gmail.com)
 
 # Links úteis
 - [Document List](https://docs.google.com/spreadsheets/d/1FUj7v2UFOt5D7xoxnXFB4-5hScnSUkrlHb5BRGDzzfA/)
 - [Vision & Scope](https://docs.google.com/document/d/e/2PACX-1vSed0cudh8bJFB5TO-gkCKJ8sh-4qKgvkYuUx5hTl8r4nmWl7Kjmrk2aLukHUsbeZZbnmRQUIh6eIP-/pub)
 - [Software Development Plan](https://docs.google.com/document/d/e/2PACX-1vT_mhTZBxZYlDS5ZMNIT7Oh4M5wjm4iYGlbiHG9a8V3c2ASniELGlRmL7zpbMvQokfGXdn7Chp1YXm6/pub)
-- [Software Requirements Specification]()
+- [Software Requirements Specification](https://docs.google.com/document/d/e/2PACX-1vTGvyT-pWjeFFMw9Cb61EgtGvstz3ykpNUFvig872kxfvwFTEgm9HBIZzfci72PzPfQaApW3BGsfs4X/pub)
