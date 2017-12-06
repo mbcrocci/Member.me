@@ -6,10 +6,10 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 
 # Autores
 - Maurizio Crocci (mbcrocci@gmail.com)
-- Pedro Oliveira (p5489pmdo@gmail.com)
-- André Nelas (andrepncorreia@gmail.com)
-- Carlos Santana (candresantana1@gmail.com)
-- Hugo Silva (jhssilva96@gmail.com)
+- P
+- A
+- C
+- H
 
 # Links úteis
 - [Document List](https://docs.google.com/spreadsheets/d/1FUj7v2UFOt5D7xoxnXFB4-5hScnSUkrlHb5BRGDzzfA/)
