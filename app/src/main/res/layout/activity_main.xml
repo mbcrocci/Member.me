@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="pt.isec.gps1718_g15.memberme.MainActivity">
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
