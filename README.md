@@ -9,7 +9,7 @@ Ajudar todas as pessoas com problemas de organização, com principal foco nos e
 - P
 - A
 - C
-- H
+- Hugo Silva (jhssilva96@gmail.com)
 
 # Links úteis
 - [Document List](https://docs.google.com/spreadsheets/d/1FUj7v2UFOt5D7xoxnXFB4-5hScnSUkrlHb5BRGDzzfA/)
