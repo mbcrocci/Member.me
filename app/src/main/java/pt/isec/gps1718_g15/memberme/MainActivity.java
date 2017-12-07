@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,25 +34,34 @@ public class MainActivity extends Activity {
 
         listaEventos = criarEventosParaTeste();
 
+        for (Evento e: listaEventos)
+            Log.i("MainActivityOnCreate", "Name: " + e.getName()
+                    + " Start Hour: " + e.getStartingHour()
+                    + " End Hour: " + e.getEndingHour()
+                    + " Day: " + e.getDayStart()
+                    + " Month: " + e.getMonthStart()
+                    + " Year: " + e.getYearStart()
+            );
 
-        readListaEventoFromDisk();
+
+        //readListaEventoFromDisk();
     }
 
     private ArrayList<Evento> criarEventosParaTeste() {
 
         Evento e1 = new Evento("Evento 1", 10, 11,
-                6, 12, 2017,
-                6, 12, 2017,
+                8, 13, 2017,
+                8, 13, 2017,
                 false, false, false);
 
-        Evento e2 = new Evento("Evento 1", 8, 9,
-                7, 12, 2017,
-                7, 12, 2017,
+        Evento e2 = new Evento("Evento 2", 8, 9,
+                7, 13, 2017,
+                7, 13, 2017,
                 false, false, false);
 
-        Evento e3 = new Evento("Evento 1", 12, 14,
-                8, 12, 2017,
-                8, 12, 2017,
+        Evento e3 = new Evento("Evento 3", 12, 14,
+                8, 13, 2017,
+                8, 13, 2017,
                 false, false, false);
 
 
@@ -60,6 +70,15 @@ public class MainActivity extends Activity {
         lista.add(e2);
         lista.add(e3);
 
+        for (Evento e: lista)
+            Log.i("MainActivityCriarTestes", "Name: " + e.getName()
+                    + " Start Hour: " + e.getStartingHour()
+                    + " End Hour: " + e.getEndingHour()
+                    + " Day: " + e.getDayStart()
+                    + " Month: " + e.getMonthStart()
+                    + " Year: " + e.getYearStart()
+            );
+
         return lista;
     }
 
@@ -67,21 +86,21 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        readListaEventoFromDisk();
+        //readListaEventoFromDisk();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        saveListaEventoToDisk();
+        //saveListaEventoToDisk();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        saveListaEventoToDisk();
+        //saveListaEventoToDisk();
     }
 
     private  void readListaEventoFromDisk() {
@@ -131,7 +150,7 @@ public class MainActivity extends Activity {
         if(item.getItemId() == R.id.next)
         {
             Intent intent = new Intent(this,calActivity.class)
-                    .putParcelableArrayListExtra("lista_eventos", listaEventos);
+                    .putExtra("evento1", listaEventos.get(0));
             startActivity(intent);
             finish();
             return true;

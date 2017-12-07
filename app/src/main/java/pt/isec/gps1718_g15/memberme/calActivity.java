@@ -5,18 +5,23 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-public class calActivity extends Activity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, WeekView.EventLongPressListener {
+public class calActivity extends Activity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener,
+        WeekView.EventLongPressListener, WeekView.EmptyViewLongPressListener {
 
     // Field copiados da biblioteca
     private static final int TYPE_DAY_VIEW = 1;
@@ -33,16 +38,27 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal);
 
-        weekView = (WeekView) findViewById(R.id.weekView);
+        //listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
+
+        listaEventos = new ArrayList<>();
+        listaEventos.add( (Evento) getIntent().getExtras().get("evento1") );
+
+
+        weekView = findViewById(R.id.weekView);
         weekView.setOnEventClickListener(this);
         weekView.setMonthChangeListener(this);
         weekView.setEventLongPressListener(this);
 
-        weekView.goToToday();
 
-        Bundle bdl = getIntent().getExtras();
-        if (bdl != null) {
-            listaEventos = bdl.getParcelableArrayList("lista_eventos");
+
+        for (Evento e: listaEventos) {
+            Log.i("CalActivityOnCreate", "Name: " + e.getName()
+                    + " Start Hour: " + e.getStartingHour()
+                    + " End Hour: " + e.getEndingHour()
+                    + " Day: " + e.getDayStart()
+                    + " Month: " + e.getMonthStart()
+                    + " Year: " + e.getYearStart()
+            );
         }
 
     }
@@ -72,8 +88,19 @@ public class calActivity extends Activity implements WeekView.EventClickListener
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         List<WeekViewEvent> events = new ArrayList<>();
 
-        for (Evento evento : listaEventos)
-            events.add( evento.toWeekViewEventTeste() );
+        for (Evento evento : listaEventos) {
+            WeekViewEvent e = evento.toWeekViewEventTeste();
+            // events.add(evento.toWeekViewEventTeste());
+
+            Log.i("WeekViewMonthChange", "Name: " + e.getName()
+                    + " Start Hour: " + e.getStartTime().getTime().getHours()
+                    + " End Hour: " + e.getEndTime().getTime().getHours()
+                    + " Day: " + e.getStartTime().getTime().getDay()
+                    + " Month: " + e.getStartTime().getTime().getMonth()
+                    + " Year: " + e.getStartTime().getTime().getYear()
+            );
+            events.add(e);
+        }
 
         return events;
     }
@@ -88,5 +115,17 @@ public class calActivity extends Activity implements WeekView.EventClickListener
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
 
+    }
+
+    public WeekView getWeekView() {
+        return weekView;
+    }
+
+    @Override
+    public void onEmptyViewLongPress(Calendar time) {
+        Toast.makeText(this, "Empty view long pressed: " + getEventTitle(time), Toast.LENGTH_SHORT).show();
+    }
+    protected String getEventTitle(Calendar time) {
+        return String.format("Event of %02d:%02d %s/%d", time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), time.get(Calendar.MONTH)+1, time.get(Calendar.DAY_OF_MONTH));
     }
 }
