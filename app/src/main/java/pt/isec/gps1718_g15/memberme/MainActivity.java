@@ -34,34 +34,24 @@ public class MainActivity extends Activity {
 
         listaEventos = criarEventosParaTeste();
 
-        for (Evento e: listaEventos)
-            Log.i("MainActivityOnCreate", "Name: " + e.getName()
-                    + " Start Hour: " + e.getStartingHour()
-                    + " End Hour: " + e.getEndingHour()
-                    + " Day: " + e.getDayStart()
-                    + " Month: " + e.getMonthStart()
-                    + " Year: " + e.getYearStart()
-            );
-
-
         //readListaEventoFromDisk();
     }
 
     private ArrayList<Evento> criarEventosParaTeste() {
 
         Evento e1 = new Evento("Evento 1", 10, 11,
-                8, 13, 2017,
-                8, 13, 2017,
+                7, 12, 2017,
+                7, 12, 2017,
                 false, false, false);
 
-        Evento e2 = new Evento("Evento 2", 8, 9,
-                7, 13, 2017,
-                7, 13, 2017,
+        Evento e2 = new Evento("Evento 2", 12, 14,
+                7, 12, 2017,
+                7, 12, 2017,
                 false, false, false);
 
-        Evento e3 = new Evento("Evento 3", 12, 14,
-                8, 13, 2017,
-                8, 13, 2017,
+        Evento e3 = new Evento("Evento 3", 13, 15,
+                8, 12, 2017,
+                8, 12, 2017,
                 false, false, false);
 
 
@@ -69,15 +59,6 @@ public class MainActivity extends Activity {
         lista.add(e1);
         lista.add(e2);
         lista.add(e3);
-
-        for (Evento e: lista)
-            Log.i("MainActivityCriarTestes", "Name: " + e.getName()
-                    + " Start Hour: " + e.getStartingHour()
-                    + " End Hour: " + e.getEndingHour()
-                    + " Day: " + e.getDayStart()
-                    + " Month: " + e.getMonthStart()
-                    + " Year: " + e.getYearStart()
-            );
 
         return lista;
     }
@@ -150,7 +131,7 @@ public class MainActivity extends Activity {
         if(item.getItemId() == R.id.next)
         {
             Intent intent = new Intent(this,calActivity.class)
-                    .putExtra("evento1", listaEventos.get(0));
+                    .putParcelableArrayListExtra("lista_eventos", listaEventos);
             startActivity(intent);
             finish();
             return true;

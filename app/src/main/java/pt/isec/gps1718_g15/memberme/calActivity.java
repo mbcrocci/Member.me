@@ -3,10 +3,7 @@ package pt.isec.gps1718_g15.memberme;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.RectF;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,29 +35,12 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal);
 
-        //listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
-
-        listaEventos = new ArrayList<>();
-        listaEventos.add( (Evento) getIntent().getExtras().get("evento1") );
-
+        listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
 
         weekView = findViewById(R.id.weekView);
         weekView.setOnEventClickListener(this);
         weekView.setMonthChangeListener(this);
         weekView.setEventLongPressListener(this);
-
-
-
-        for (Evento e: listaEventos) {
-            Log.i("CalActivityOnCreate", "Name: " + e.getName()
-                    + " Start Hour: " + e.getStartingHour()
-                    + " End Hour: " + e.getEndingHour()
-                    + " Day: " + e.getDayStart()
-                    + " Month: " + e.getMonthStart()
-                    + " Year: " + e.getYearStart()
-            );
-        }
-
     }
 
     @Override
@@ -88,19 +68,8 @@ public class calActivity extends Activity implements WeekView.EventClickListener
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         List<WeekViewEvent> events = new ArrayList<>();
 
-        for (Evento evento : listaEventos) {
-            WeekViewEvent e = evento.toWeekViewEventTeste();
-            // events.add(evento.toWeekViewEventTeste());
-
-            Log.i("WeekViewMonthChange", "Name: " + e.getName()
-                    + " Start Hour: " + e.getStartTime().getTime().getHours()
-                    + " End Hour: " + e.getEndTime().getTime().getHours()
-                    + " Day: " + e.getStartTime().getTime().getDay()
-                    + " Month: " + e.getStartTime().getTime().getMonth()
-                    + " Year: " + e.getStartTime().getTime().getYear()
-            );
-            events.add(e);
-        }
+        for (Evento evento : listaEventos)
+            events.add(evento.toWeekViewEventTeste());
 
         return events;
     }

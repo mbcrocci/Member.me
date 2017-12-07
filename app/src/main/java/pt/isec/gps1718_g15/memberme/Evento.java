@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class Evento implements Parcelable {
+    private static int id = 0;
     String name;
     int startingHour;
     int endingHour;
@@ -44,11 +45,11 @@ public class Evento implements Parcelable {
         this.endingHour = endingHour;
 
         this.dayStart = dayStart;
-        this.monthStart = monthStart-1;
+        this.monthStart = monthStart;
         this.yearStart = yearStart;
 
         this.dayEnd = dayEnd;
-        this.monthEnd = monthEnd-1;
+        this.monthEnd = monthEnd;
         this.yearEnd = yearEnd;
 
         this.despertador = despertador;
@@ -145,22 +146,6 @@ public class Evento implements Parcelable {
                 yearEnd, monthEnd, dayEnd, endingHour, 0
         );
 
-        Log.i("EventotoWeekView", "Name: " + name
-                + " Start Hour: " +  startingHour
-                + " End Hour: " +  endingHour
-                + " Day: " +  dayStart
-                + " Month: " +  monthStart
-                + " Year: " +  yearStart
-        );
-
-        Log.i("EventotoWeekView", "Name: " + weekViewEvent.getName()
-                + " Start Hour: " +  weekViewEvent.getStartTime().getTime().getHours()
-                + " End Hour: " +  weekViewEvent.getEndTime().getTime().getHours()
-                + " Day: " +  weekViewEvent.getStartTime().getTime().getDay()
-                + " Month: " +  weekViewEvent.getStartTime().getTime().getMonth()
-                + " Year: " +  weekViewEvent.getStartTime().getTime().getYear()
-        );
-
         weekViewEvent.setColor(Color.BLUE);
         return weekViewEvent;
     }
@@ -169,6 +154,7 @@ public class Evento implements Parcelable {
     // Esta interface permite operacoes iguais a Serializable
 
     protected Evento(Parcel in) {
+        id = in.readInt();
         name = in.readString();
         startingHour = in.readInt();
         endingHour = in.readInt();
@@ -205,6 +191,7 @@ public class Evento implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeInt(startingHour);
         parcel.writeInt(endingHour);
