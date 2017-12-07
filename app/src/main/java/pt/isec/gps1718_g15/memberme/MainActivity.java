@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    List<Evento> listaEventos;
+    ArrayList<Evento> listaEventos;
     FileInputStream fInListaEventos;
     FileOutputStream fOutListaEventos;
 
@@ -30,11 +31,39 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listaEventos = criarEventosParaTeste();
+
 
         readListaEventoFromDisk();
     }
 
-  @Override
+    private ArrayList<Evento> criarEventosParaTeste() {
+
+        Evento e1 = new Evento("Evento 1", 10, 11,
+                6, 12, 2017,
+                6, 12, 2017,
+                false, false, false);
+
+        Evento e2 = new Evento("Evento 1", 8, 9,
+                7, 12, 2017,
+                7, 12, 2017,
+                false, false, false);
+
+        Evento e3 = new Evento("Evento 1", 12, 14,
+                8, 12, 2017,
+                8, 12, 2017,
+                false, false, false);
+
+
+        ArrayList<Evento> lista = new ArrayList<>();
+        lista.add(e1);
+        lista.add(e2);
+        lista.add(e3);
+
+        return lista;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -60,16 +89,12 @@ public class MainActivity extends Activity {
             fInListaEventos = openFileInput("listaEventos.data");
             ObjectInputStream objIn = new ObjectInputStream(fInListaEventos);
 
-            listaEventos = (List<Evento>) objIn.readObject();
+            listaEventos = (ArrayList<Evento>) objIn.readObject();
 
             objIn.close();
             fInListaEventos.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -86,6 +111,7 @@ public class MainActivity extends Activity {
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,7 +130,8 @@ public class MainActivity extends Activity {
 
         if(item.getItemId() == R.id.next)
         {
-            Intent intent = new Intent(this,calActivity.class);
+            Intent intent = new Intent(this,calActivity.class)
+                    .putParcelableArrayListExtra("lista_eventos", listaEventos);
             startActivity(intent);
             finish();
             return true;
