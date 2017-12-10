@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.ListView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,38 +29,57 @@ public class MainActivity extends Activity {
     FileInputStream fInListaEventos;
     FileOutputStream fOutListaEventos;
 
+    ListView lvListaEventos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listaEventos = criarEventosParaTeste();
 
+        listaEventos = criarEventosParaTeste();
         //readListaEventoFromDisk();
+
+        lvListaEventos = (ListView) findViewById(R.id.lvListaEventos);
+
+        // Todo(mbcrocci): provavelmente seria melhor um CustomAdapter
+        ArrayAdapter<Evento> arrayAdapter = new ArrayAdapter<Evento>(
+                this,
+                android.R.layout.simple_list_item_1,
+                listaEventos
+        );
+
+        lvListaEventos.setAdapter(arrayAdapter);
     }
 
     private ArrayList<Evento> criarEventosParaTeste() {
 
         Evento e1 = new Evento("Evento 1", 10, 11,
-                7, 12, 2017,
-                7, 12, 2017,
+                11, 12, 2017,
+                11, 12, 2017,
                 false, false, false);
 
         Evento e2 = new Evento("Evento 2", 12, 14,
-                7, 12, 2017,
-                7, 12, 2017,
+                11, 12, 2017,
+                11, 12, 2017,
                 false, false, false);
 
         Evento e3 = new Evento("Evento 3", 13, 15,
-                8, 12, 2017,
-                8, 12, 2017,
+                12, 12, 2017,
+                12, 12, 2017,
                 false, false, false);
+
+        Evento e4 = new Evento("Evento 4", 16, 17,
+                12, 12, 2017,
+                12, 12, 2017,
+                false, false,false);
 
 
         ArrayList<Evento> lista = new ArrayList<>();
         lista.add(e1);
         lista.add(e2);
         lista.add(e3);
+        lista.add(e4);
 
         return lista;
     }

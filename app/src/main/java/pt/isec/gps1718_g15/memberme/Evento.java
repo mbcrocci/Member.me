@@ -205,4 +205,10 @@ public class Evento implements Parcelable {
         parcel.writeByte((byte) (repetirEvento ? 1 : 0));
         parcel.writeByte((byte) (naoMeChateies ? 1 : 0));
     }
+
+    @Override
+    public String toString() {
+        return name + " - " + startingHour + ":" + endingHour + " - "
+                + dayStart + "/" + monthStart + "/" + yearStart;
+    }
 }

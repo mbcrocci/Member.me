@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         weekView.setOnEventClickListener(this);
         weekView.setMonthChangeListener(this);
         weekView.setEventLongPressListener(this);
+
     }
 
     @Override
@@ -63,7 +65,8 @@ public class calActivity extends Activity implements WeekView.EventClickListener
 
     }
 
-
+    // Metodos copiados de https://github.com/alamkanak/Android-Week-View/blob/master/sample/src/main/java/com/alamkanak/weekview/sample/BaseActivity.java
+    // Adaptados para o nosso codigo
     @Override
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         List<WeekViewEvent> events = new ArrayList<>();
@@ -77,13 +80,14 @@ public class calActivity extends Activity implements WeekView.EventClickListener
     // TODO(mbcrocci): Metodo que depois deixa modificar ou remover
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
 
     }
 
     // TODO(mbcrocci): Provavelmente faz o mesmo que onEventClick (rever SRS)
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
-
+        Toast.makeText(this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
     }
 
     public WeekView getWeekView() {
