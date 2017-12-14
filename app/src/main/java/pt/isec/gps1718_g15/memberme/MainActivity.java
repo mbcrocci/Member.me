@@ -41,7 +41,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listaEventos = criarEventosParaTeste();
+        try {
+            listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
+        } catch (Exception e) {
+            listaEventos = criarEventosParaTeste();
+        }
+
         //readListaEventoFromDisk();
 
         lvListaEventos = (ListView) findViewById(R.id.lvListaEventos);
@@ -144,7 +149,10 @@ public class MainActivity extends Activity {
 
     public void addEvent(View v)
     {
-        startActivity(new Intent(MainActivity.this,popupwindow.class));
+        Intent intent = new Intent(MainActivity.this, popupwindow.class)
+                .putParcelableArrayListExtra("lista-eventos", listaEventos);
+
+        startActivity(intent);
     }
 
 

@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
@@ -27,8 +28,10 @@ public class Evento implements Parcelable {
     boolean naoMeChateies;
 
 
+    TimePicker startTime;
+    TimePicker endTime;
 
-    //DatePicker startDate;
+    DatePicker startDate;
     //DatePicker endDate;
 
 
@@ -62,14 +65,14 @@ public class Evento implements Parcelable {
 
     // Usar este construtor com o botao Add
     public Evento (
-            String name, int startingHour, int endingHour,
-            DatePicker startDate, DatePicker endDate,
+            String name, TimePicker startTime, TimePicker endTime,
+            DatePicker startDate,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
         this.name = name;
-        this.startingHour = startingHour;
-        this.endingHour = endingHour;
-        //this.startDate = startDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.startDate = startDate;
         //this.endDate = endDate;
         this.despertador = despertador;
         this.repetirEvento = repetirEvento;
@@ -114,30 +117,20 @@ public class Evento implements Parcelable {
     }
 
     // Coverte Eveonto um WeekViewEvent para ser visualizado no calendario
-    /*
     public WeekViewEvent toWeekViewEvent() {
 
-        Calendar now = Calendar.getInstance();
-        Calendar startTime = (Calendar) now.clone();
-
-        startTime.set( Calendar.YEAR, startDate.getYear() );
-        startTime.set( Calendar.MONTH, startDate.getMonth() );
-        startTime.set( Calendar.DAY_OF_MONTH, startDate.getMonth() );
-
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.set( Calendar.YEAR, endDate.getYear() );
-        endTime.set( Calendar.MONTH, endDate.getMonth() );
-        endTime.set( Calendar.DAY_OF_MONTH, endDate.getDayOfMonth() );
-
-        WeekViewEvent weekViewEvent = new WeekViewEvent();
-        weekViewEvent.setName( getName() );
-        weekViewEvent.setStartTime(startTime);
-        weekViewEvent.setEndTime(endTime);
-
+       WeekViewEvent weekViewEvent = new WeekViewEvent(
+               1, name,
+               startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(),
+               startTime.getCurrentHour(), startTime.getCurrentMinute(),
+               startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(),
+               endTime.getCurrentHour(), endTime.getCurrentMinute()
+       );
+       weekViewEvent.setColor(Color.BLUE);
 
         return weekViewEvent;
     }
-    */
+
     public WeekViewEvent toWeekViewEventTeste() {
 
 
