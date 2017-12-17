@@ -72,7 +72,7 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         List<WeekViewEvent> events = new ArrayList<>();
 
         for (Evento evento : listaEventos)
-            events.add(evento.toWeekViewEventTeste());
+            events.add(evento.toWeekViewEvent());
 
         return events;
     }

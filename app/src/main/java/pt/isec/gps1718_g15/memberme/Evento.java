@@ -3,54 +3,49 @@ package pt.isec.gps1718_g15.memberme;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import com.alamkanak.weekview.WeekViewEvent;
 
-import java.io.Serializable;
-import java.util.Calendar;
-
 public class Evento implements Parcelable {
     private static int id = 0;
     String name;
-    int startingHour;
-    int endingHour;
+
+    int hourStart;
+    int minStart;
     int dayStart;
     int monthStart;
     int yearStart;
+
+    int hourEnd;
+    int minEnd;
     int dayEnd;
     int monthEnd;
     int yearEnd;
+
     boolean despertador;
     boolean repetirEvento;
     boolean naoMeChateies;
 
 
-    TimePicker startTime;
-    TimePicker endTime;
-
-    DatePicker startDate;
-    //DatePicker endDate;
-
-
-
-    // Usar este construtor para teste
     public Evento(
-            String name, int startingHour, int endingHour,
+            String name, int hourStart, int minStart,
             int dayStart, int monthStart, int yearStart,
+            int hourEnd, int minEnd,
             int dayEnd, int monthEnd, int yearEnd,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
         this.name = name;
-        this.startingHour = startingHour;
-        this.endingHour = endingHour;
 
+        this.hourStart = hourStart;
+        this.minStart = minEnd;
         this.dayStart = dayStart;
         this.monthStart = monthStart;
         this.yearStart = yearStart;
 
+        this.hourEnd = hourEnd;
+        this.minEnd = minEnd;
         this.dayEnd = dayEnd;
         this.monthEnd = monthEnd;
         this.yearEnd = yearEnd;
@@ -66,14 +61,23 @@ public class Evento implements Parcelable {
     // Usar este construtor com o botao Add
     public Evento (
             String name, TimePicker startTime, TimePicker endTime,
-            DatePicker startDate,
+            DatePicker date,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
         this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.startDate = startDate;
-        //this.endDate = endDate;
+
+        this.hourStart = startTime.getCurrentHour();
+        this.minStart = startTime.getCurrentMinute();
+        this.dayStart = date.getDayOfMonth();
+        this.monthStart = date.getMonth();
+        this.yearStart = date.getYear();
+
+        this.hourEnd = endTime.getCurrentHour();
+        this.minEnd = endTime.getCurrentMinute();
+        this.dayEnd = date.getDayOfMonth();
+        this.monthEnd = date.getDayOfMonth();
+        this.yearEnd = date.getDayOfMonth();
+
         this.despertador = despertador;
         this.repetirEvento = repetirEvento;
         this.naoMeChateies = naoMeChateies;
@@ -84,12 +88,12 @@ public class Evento implements Parcelable {
         return name;
     }
 
-    public int getStartingHour() {
-        return startingHour;
+    public int getHourStart() {
+        return hourStart;
     }
 
-    public int getEndingHour() {
-        return endingHour;
+    public int getHourEnd() {
+        return hourEnd;
     }
 
     public int getDayStart() {
@@ -118,28 +122,15 @@ public class Evento implements Parcelable {
 
     // Coverte Eveonto um WeekViewEvent para ser visualizado no calendario
     public WeekViewEvent toWeekViewEvent() {
-
        WeekViewEvent weekViewEvent = new WeekViewEvent(
-               1, name,
-               startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(),
-               startTime.getCurrentHour(), startTime.getCurrentMinute(),
-               startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(),
-               endTime.getCurrentHour(), endTime.getCurrentMinute()
+               id, name,
+               yearStart, monthStart, dayStart,
+               hourStart, minStart,
+               yearEnd, monthEnd, dayEnd,
+               hourEnd, minEnd
        );
        weekViewEvent.setColor(Color.BLUE);
 
-        return weekViewEvent;
-    }
-
-    public WeekViewEvent toWeekViewEventTeste() {
-
-
-        WeekViewEvent weekViewEvent = new WeekViewEvent(1, name,
-                yearStart, monthStart, dayStart, startingHour, 0,
-                yearEnd, monthEnd, dayEnd, endingHour, 0
-        );
-
-        weekViewEvent.setColor(Color.BLUE);
         return weekViewEvent;
     }
 
@@ -148,14 +139,16 @@ public class Evento implements Parcelable {
 
     protected Evento(Parcel in) {
         id = in.readInt();
-        name = in.readString();
-        startingHour = in.readInt();
-        endingHour = in.readInt();
 
+        name = in.readString();
+        hourStart = in.readInt();
+        minStart = in.readInt();
         dayStart = in.readInt();
         monthStart = in.readInt();
         yearStart = in.readInt();
 
+        hourEnd = in.readInt();
+        minEnd = in.readInt();
         dayEnd = in.readInt();
         monthEnd = in.readInt();
         yearEnd = in.readInt();
@@ -186,14 +179,19 @@ public class Evento implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(name);
-        parcel.writeInt(startingHour);
-        parcel.writeInt(endingHour);
+
+        parcel.writeInt(hourStart);
+        parcel.writeInt(minStart);
         parcel.writeInt(dayStart);
         parcel.writeInt(monthStart);
         parcel.writeInt(yearStart);
+
+        parcel.writeInt(hourEnd);
+        parcel.writeInt(minEnd);
         parcel.writeInt(dayEnd);
         parcel.writeInt(monthEnd);
         parcel.writeInt(yearEnd);
+
         parcel.writeByte((byte) (despertador ? 1 : 0));
         parcel.writeByte((byte) (repetirEvento ? 1 : 0));
         parcel.writeByte((byte) (naoMeChateies ? 1 : 0));
@@ -201,7 +199,8 @@ public class Evento implements Parcelable {
 
     @Override
     public String toString() {
-        return name + " - " + startingHour + ":" + endingHour + " - "
-                + dayStart + "/" + monthStart + "/" + yearStart;
+            return name + " - " + hourStart + ":" + minStart + " - "
+                    + hourEnd + ":" + minEnd + " - "
+                    + dayStart + "/" + monthStart + "/" + yearStart;
     }
 }

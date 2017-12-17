@@ -1,39 +1,27 @@
 package pt.isec.gps1718_g15.memberme;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
     ArrayList<Evento> listaEventos;
-    FileInputStream fInListaEventos;
-    FileOutputStream fOutListaEventos;
-
     ListView lvListaEventos;
 
     @Override
@@ -41,13 +29,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try {
-            listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
-        } catch (Exception e) {
-            listaEventos = criarEventosParaTeste();
-        }
+        listaEventos = readListaEventoFromDisk(this);
 
-        //readListaEventoFromDisk();
+        if (listaEventos == null)
+            listaEventos = criarEventosParaTeste();
+
 
         lvListaEventos = (ListView) findViewById(R.id.lvListaEventos);
 
@@ -63,25 +49,37 @@ public class MainActivity extends Activity {
 
     private ArrayList<Evento> criarEventosParaTeste() {
 
-        Evento e1 = new Evento("Evento 1", 10, 11,
-                11, 12, 2017,
-                11, 12, 2017,
+        Evento e1 = new Evento(
+                "Evento 1",
+                10, 0,
+                18, 12, 2017,
+                11, 0,
+                18, 12, 2017,
                 false, false, false);
 
-        Evento e2 = new Evento("Evento 2", 12, 14,
-                11, 12, 2017,
-                11, 12, 2017,
+        Evento e2 = new Evento(
+                "Evento 2",
+                13, 0,
+                18, 12, 2017,
+                15, 0,
+                18, 12, 2017,
                 false, false, false);
 
-        Evento e3 = new Evento("Evento 3", 13, 15,
-                12, 12, 2017,
-                12, 12, 2017,
+        Evento e3 = new Evento(
+                "Evento 3",
+                9, 30,
+                19, 12, 2017,
+                11, 30,
+                18, 12, 2017,
                 false, false, false);
 
-        Evento e4 = new Evento("Evento 4", 16, 17,
-                12, 12, 2017,
-                12, 12, 2017,
-                false, false,false);
+        Evento e4 = new Evento(
+                "Evento 4",
+                12, 0,
+                19, 12, 2017,
+                14, 0,
+                19, 12, 2017,
+                false, false, false);
 
 
         ArrayList<Evento> lista = new ArrayList<>();
@@ -96,55 +94,38 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        //readListaEventoFromDisk();
+        listaEventos = readListaEventoFromDisk(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        //saveListaEventoToDisk();
+        saveListaEventoToDisk(listaEventos, this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        //saveListaEventoToDisk();
+        saveListaEventoToDisk(listaEventos, this);
     }
 
-    private  void readListaEventoFromDisk() {
-        try {
-            fInListaEventos = openFileInput("listaEventos.data");
-            ObjectInputStream objIn = new ObjectInputStream(fInListaEventos);
+    public static ArrayList<Evento> readListaEventoFromDisk(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Evento>>() {}.getType();
+        String gsonString = sharedPreferences.getString("listaEventos", "");
 
-            listaEventos = (ArrayList<Evento>) objIn.readObject();
-
-            objIn.close();
-            fInListaEventos.close();
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        return gson.fromJson(gsonString, type);
     }
 
-    private void saveListaEventoToDisk() {
-        try {
-            fOutListaEventos = openFileOutput("listaEventos.data", Context.MODE_PRIVATE);
-            ObjectOutputStream objOut = new ObjectOutputStream(fOutListaEventos);
+    public static void saveListaEventoToDisk(ArrayList<Evento> listaEventos, Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            objOut.writeObject(listaEventos);
-
-            objOut.close();
-            fOutListaEventos.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Gson gson = new Gson();
+        String json = gson.toJson(listaEventos);
+        editor.putString("listaEventos", json);
+        editor.commit();
     }
 
     public void addEvent(View v)

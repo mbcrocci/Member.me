@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.sql.Time;
@@ -38,15 +39,13 @@ public class popupwindow extends Activity {
         btnAddConfirmar.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO(mbcrocci): Criar evento e guarda-lo na lista de eventos
+                    EditText vName = findViewById(R.id.edTitulo);
+                    String name = vName.getText().toString();
 
-
-                    View vName = findViewById(R.id.edTitulo);
-
-                    String name = (String) vName.getContentDescription();
                     TimePicker startTimePciker = findViewById(R.id.startTimePickerAdd);
                     TimePicker endTimePicker = findViewById(R.id.endTimePickerAdd);
                     DatePicker datePicker = findViewById(R.id.datePickerAdd);
+
                     CheckBox despertador = findViewById(R.id.checkboxDespertadorAdd);
                     CheckBox naoMeChateies = findViewById(R.id.checkboxNaoMeChateiesAdd);
                     CheckBox repetir = findViewById(R.id.checkboxnRepetirAdd);
@@ -66,7 +65,9 @@ public class popupwindow extends Activity {
 
                     listaEventos.add(evento);
 
-                    Log.i("PopupWindowsConfirm", "Evento " + name);
+                    Log.i("PopupWindowsConfirm", evento.toString());
+
+                    MainActivity.saveListaEventoToDisk(listaEventos, popupwindow.this);
 
                     Intent intent = new Intent(popupwindow.this, MainActivity.class).
                             putParcelableArrayListExtra("lista_eventos", listaEventos);
