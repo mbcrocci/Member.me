@@ -31,8 +31,10 @@ public class MainActivity extends Activity {
 
         listaEventos = readListaEventoFromDisk(this);
 
-        if (listaEventos == null)
+        if (listaEventos == null) {
             listaEventos = criarEventosParaTeste();
+            saveListaEventoToDisk(listaEventos, this);
+        }
 
 
         lvListaEventos = (ListView) findViewById(R.id.lvListaEventos);
