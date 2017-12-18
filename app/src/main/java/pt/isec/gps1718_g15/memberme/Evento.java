@@ -9,7 +9,8 @@ import android.widget.TimePicker;
 import com.alamkanak.weekview.WeekViewEvent;
 
 public class Evento implements Parcelable {
-    private static int id = 0;
+    private static int classID = 0;
+    int id;
     String name;
 
     private int hourStart;
@@ -36,11 +37,12 @@ public class Evento implements Parcelable {
             int dayEnd, int monthEnd, int yearEnd,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
-        this.id++;
+        classID++;
+        this.id = classID;
         this.name = name;
 
         this.hourStart = hourStart;
-        this.minStart = minEnd;
+        this.minStart = minStart;
         this.dayStart = dayStart;
         this.monthStart = monthStart;
         this.yearStart = yearStart;
@@ -65,7 +67,8 @@ public class Evento implements Parcelable {
             DatePicker date,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
-        id++;
+        classID++;
+        this.id = classID;
         this.name = name;
 
         this.hourStart = startTime.getCurrentHour();
@@ -85,7 +88,7 @@ public class Evento implements Parcelable {
         this.naoMeChateies = naoMeChateies;
     }
 
-    public static int getId() {
+    public int getId() {
         return id;
     }
 
