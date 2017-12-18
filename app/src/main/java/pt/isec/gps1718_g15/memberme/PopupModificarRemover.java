@@ -21,7 +21,7 @@ public class PopupModificarRemover extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.8),(int)(height*.7));
+        getWindow().setLayout((int)(width*.75),(int)(height*.25));
     }
 
     public void modificarEvento(View v) {
