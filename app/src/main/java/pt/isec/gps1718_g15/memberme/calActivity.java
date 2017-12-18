@@ -36,7 +36,7 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cal);
 
-        listaEventos = getIntent().getExtras().getParcelableArrayList("lista_eventos");
+        listaEventos = MainActivity.readListaEventoFromDisk(this);
 
         weekView = findViewById(R.id.weekView);
         weekView.setOnEventClickListener(this);
@@ -74,14 +74,20 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         for (Evento evento : listaEventos)
             events.add(evento.toWeekViewEvent());
 
+        for (WeekViewEvent event : events)
+            Log.i("OnMonthChange", event.toString());
+
         return events;
     }
 
     // TODO(mbcrocci): Metodo que depois deixa modificar ou remover
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        MainActivity.saveListaEventoToDisk(listaEventos, this);
 
+        Intent intent = new Intent(this, PopupModificarRemover.class);
+        intent.putExtra("name", event.getName());
+        startActivity(intent);
     }
 
     // TODO(mbcrocci): Provavelmente faz o mesmo que onEventClick (rever SRS)

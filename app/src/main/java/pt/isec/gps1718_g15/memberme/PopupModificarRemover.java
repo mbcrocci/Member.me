@@ -29,13 +29,31 @@ public class PopupModificarRemover extends Activity {
     }
 
     public void removerEvento(View v) {
-        int pos = (int) getIntent().getExtras().get("pos");
-
         ArrayList<Evento> listaEventos = MainActivity.readListaEventoFromDisk(this);
-        listaEventos.remove(pos);
+
+        try {
+            int pos = (int) getIntent().getExtras().get("pos");
+
+            listaEventos.remove(pos);
+
+
+        } catch (Exception e) {
+
+            String name = (String) getIntent().getExtras().get("name");
+            Evento evento = null;
+
+            for (Evento ev : listaEventos) {
+                if (ev.getName().equals(name))
+                    evento = ev;
+            }
+
+            if (evento != null)
+                listaEventos.remove(evento);
+        }
         MainActivity.saveListaEventoToDisk(listaEventos, this);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

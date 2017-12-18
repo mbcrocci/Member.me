@@ -101,6 +101,7 @@ public class popupwindow extends Activity {
                 putParcelableArrayListExtra("lista_eventos", listaEventos);
 
         startActivity(intent);
+        finish();
     }
 }
 
