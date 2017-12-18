@@ -47,11 +47,37 @@ public class Evento implements Parcelable {
         this.monthStart = monthStart;
         this.yearStart = yearStart;
 
-        this.hourEnd = hourEnd;
-        this.minEnd = minEnd;
-        this.dayEnd = dayEnd;
-        this.monthEnd = monthEnd;
-        this.yearEnd = yearEnd;
+        if (yearEnd < yearStart)
+            this.yearEnd = yearStart;
+        else
+            this.yearEnd = yearEnd;
+
+        if (this.yearEnd == this.yearStart
+                && monthEnd < this.monthStart)
+            this.monthEnd = monthStart;
+        else
+            this.monthEnd = monthEnd;
+
+        if (this.yearEnd == this.yearStart
+                && this.monthEnd == this.monthStart
+                && dayEnd < this.dayStart)
+            this.dayEnd = this.dayStart;
+        else
+            this.dayEnd = dayEnd;
+
+        if (hourEnd < hourStart)
+            this.hourEnd = hourStart + 1;
+        else
+            this.hourEnd = hourEnd;
+
+        if (this.hourStart == this.hourEnd && minEnd < minStart) {
+            if (minStart + 30 >= 60)
+                this.minEnd = (minStart + 30) - 60;
+            else
+                this.minEnd = minStart + 30;
+        } else {
+            this.minEnd = minEnd;
+        }
 
         this.despertador = despertador;
         this.repetirEvento = repetirEvento;
@@ -77,9 +103,26 @@ public class Evento implements Parcelable {
 
         this.hourEnd = endTime.getCurrentHour();
         this.minEnd = endTime.getCurrentMinute();
+
+        if (endTime.getCurrentHour() < startTime.getCurrentHour())
+            this.hourEnd = hourStart + 1;
+        else
+            this.hourEnd = endTime.getCurrentHour();
+
+        if (this.hourStart == this.hourEnd
+                && endTime.getCurrentMinute() < this.minStart) {
+            if (this.minStart + 30 >= 60)
+                this.minEnd = (this.minStart + 30) - 60;
+            else
+                this.minEnd = this.minStart + 30;
+        } else {
+            this.minEnd = endTime.getCurrentMinute();
+        }
+
+        // Nao e preciso fazer check pq so e passado uma data
         this.dayEnd = date.getDayOfMonth();
-        this.monthEnd = date.getDayOfMonth() + 1;
-        this.yearEnd = date.getDayOfMonth();
+        this.monthEnd = date.getMonth() + 1;
+        this.yearEnd = date.getYear();
 
         this.despertador = despertador;
         this.repetirEvento = repetirEvento;

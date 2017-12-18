@@ -24,6 +24,15 @@ public class EventoTest {
         );
     }
 
+    private Evento newEventoFimPassado() {
+        return new Evento(
+                "Evento Teste 2",
+                10, 30, 18, 12, 2017,
+                9, 0, 17, 11, 2017,
+                false, false, false
+        );
+    }
+
     @Test
     public void testGetId() throws Exception {
         Evento evento1 = newEvento();
@@ -103,5 +112,35 @@ public class EventoTest {
         Evento evento = newEvento();
         // o expected deveria ser contruido apartir do evento criado
         assertEquals("Evento Teste 1 - 10:30 - 11:15 - 18/12/2017", evento.toString());
+    }
+
+    @Test
+    public void testHourPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        assertEquals(11, evento.getHourEnd());
+    }
+
+    @Test
+    public void testMinPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        assertEquals(0, evento.getMinEnd());
+    }
+
+    @Test
+    public void testDayPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        assertEquals(18, evento.getDayEnd());
+    }
+
+    @Test
+    public void testMonthPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        assertEquals(12, evento.getMonthEnd());
+    }
+
+    @Test
+    public void testYearPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        assertEquals(2017, evento.getYearEnd());
     }
 }

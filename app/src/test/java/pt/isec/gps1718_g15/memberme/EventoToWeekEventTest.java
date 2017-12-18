@@ -19,6 +19,15 @@ public class EventoToWeekEventTest {
         );
     }
 
+    private Evento newEventoFimPassado() {
+        return new Evento(
+                "Evento Teste 2",
+                10, 30, 18, 12, 2017,
+                9, 0, 17, 11, 2017,
+                false, false, false
+        );
+    }
+
     @Test
     public void testToWeekViewEventId() throws Exception {
         Evento evento = newEvento();
@@ -117,9 +126,54 @@ public class EventoToWeekEventTest {
 
     @Test
     public void testToWeekViewEventYearEnd() throws Exception {
-        Evento evento = newEvento();
+        Evento evento = newEventoFimPassado();
         WeekViewEvent weekEvent = evento.toWeekViewEvent();
 
         assertEquals(evento.getYearEnd(), weekEvent.getEndTime().get(Calendar.YEAR));
+    }
+
+    @Test
+    public void testToWeekViewEventHourEndPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        WeekViewEvent weekEvent = evento.toWeekViewEvent();
+
+        assertEquals(
+                evento.getHourStart()+1, weekEvent.getEndTime().get(Calendar.HOUR_OF_DAY));
+    }
+
+    @Test
+    public void testToWeekViewEventMinEndPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        WeekViewEvent weekEvent = evento.toWeekViewEvent();
+
+        assertEquals(0, weekEvent.getEndTime().get(Calendar.MINUTE));
+    }
+
+    @Test
+    public void testToWeekViewEventDayEndPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        WeekViewEvent weekEvent = evento.toWeekViewEvent();
+
+        assertEquals(evento.getDayStart(), weekEvent.getEndTime().get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Test
+    public void testToWeekViewEventMonthEndPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        WeekViewEvent weekEvent = evento.toWeekViewEvent();
+
+        /* -1 porque a class Calendar comeca com os meses em 0
+         * O construtor da class WeekViewEvent converte mes para o correspondente no Calendar
+         * se monthStart = 10 o mes correspondente em Calendar = 9
+         */
+        assertEquals(evento.getMonthStart() - 1, weekEvent.getEndTime().get(Calendar.MONTH));
+    }
+
+    @Test
+    public void testToWeekViewEventYearEndPast() throws Exception {
+        Evento evento = newEventoFimPassado();
+        WeekViewEvent weekEvent = evento.toWeekViewEvent();
+
+        assertEquals(evento.getYearStart(), weekEvent.getEndTime().get(Calendar.YEAR));
     }
 }
