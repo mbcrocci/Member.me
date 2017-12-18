@@ -19,6 +19,14 @@
         <activity android:name=".calActivity" />
         <activity android:name=".popupwindow" android:theme="@style/AppTheme.CustomTheme" android:label="Adicionar Evento">
         </activity>
+
+        <receiver
+            android:name="pt.isec.gps1718_g15.memberme.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
+
+
 
 </manifest>

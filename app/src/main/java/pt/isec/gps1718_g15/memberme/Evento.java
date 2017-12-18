@@ -36,6 +36,7 @@ public class Evento implements Parcelable {
             int dayEnd, int monthEnd, int yearEnd,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
+        this.id++;
         this.name = name;
 
         this.hourStart = hourStart;
@@ -64,18 +65,19 @@ public class Evento implements Parcelable {
             DatePicker date,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
+        this.id++;
         this.name = name;
 
         this.hourStart = startTime.getCurrentHour();
         this.minStart = startTime.getCurrentMinute();
         this.dayStart = date.getDayOfMonth();
-        this.monthStart = date.getMonth();
+        this.monthStart = date.getMonth() + 1;
         this.yearStart = date.getYear();
 
         this.hourEnd = endTime.getCurrentHour();
         this.minEnd = endTime.getCurrentMinute();
         this.dayEnd = date.getDayOfMonth();
-        this.monthEnd = date.getDayOfMonth();
+        this.monthEnd = date.getDayOfMonth() + 1;
         this.yearEnd = date.getDayOfMonth();
 
         this.despertador = despertador;
@@ -83,6 +85,9 @@ public class Evento implements Parcelable {
         this.naoMeChateies = naoMeChateies;
     }
 
+    public static int getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -92,8 +97,8 @@ public class Evento implements Parcelable {
         return hourStart;
     }
 
-    public int getHourEnd() {
-        return hourEnd;
+    public int getMinStart() {
+        return minStart;
     }
 
     public int getDayStart() {
@@ -106,6 +111,14 @@ public class Evento implements Parcelable {
 
     public int getYearStart() {
         return yearStart;
+    }
+
+    public int getHourEnd() {
+        return hourEnd;
+    }
+
+    public int getMinEnd() {
+        return minEnd;
     }
 
     public int getDayEnd() {

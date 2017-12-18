@@ -1,8 +1,16 @@
 package pt.isec.gps1718_g15.memberme;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +22,7 @@ import android.widget.TimePicker;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class popupwindow extends Activity {
@@ -68,6 +77,34 @@ public class popupwindow extends Activity {
                     Log.i("PopupWindowsConfirm", evento.toString());
 
                     MainActivity.saveListaEventoToDisk(listaEventos, popupwindow.this);
+
+
+                    // Criar a notificacao
+                    if ( despertador.isChecked() ) {
+                        Intent alarmIntent = new Intent(popupwindow.this, AlarmReceiver.class);
+                        alarmIntent.putExtra("evento", evento);
+
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                popupwindow.this, 0, alarmIntent, 0);
+
+                        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTimeInMillis(System.currentTimeMillis());
+
+                        if (evento.getMinStart() - 30 > 0) {
+                            calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart());
+                            calendar.set(Calendar.MINUTE, evento.getMinStart() - 30);
+                        } else {
+                            calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart() - 1);
+                            calendar.set(Calendar.MINUTE, 30 - (evento.getMinStart() - 30));
+                        }
+                        calendar.set(Calendar.DAY_OF_MONTH, evento.getDayStart());
+                        calendar.set(Calendar.MONTH, evento.getMonthStart());
+                        calendar.set(Calendar.YEAR, evento.getYearStart());
+
+                        manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                    }
 
                     Intent intent = new Intent(popupwindow.this, MainActivity.class).
                             putParcelableArrayListExtra("lista_eventos", listaEventos);

@@ -31,4 +31,6 @@ dependencies {
     // Custom Dependencies
     compile 'com.github.alamkanak:android-week-view:1.2.6'
     compile 'com.google.code.gson:gson:2.8.2'
+
+
 }
