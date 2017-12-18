@@ -1,14 +1,18 @@
 package pt.isec.gps1718_g15.memberme;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.alamkanak.weekview.WeekViewEvent;
+
 import org.junit.Test;
+
+import java.util.Calendar;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by mbcrocci on 18/12/2017.
+/*
+ * Testa todos os campos da class Evento excepto o toWeekEvent que sera testado
+ * no ficheiro EventoToWeekEventTest
  */
+
 public class EventoTest {
 
     private Evento newEvento() {
@@ -92,10 +96,6 @@ public class EventoTest {
     public void testGetYearEnd() throws Exception {
         Evento evento = newEvento();
         assertEquals(2017, evento.getYearEnd());
-    }
-
-    @Test
-    public void toWeekViewEvent() throws Exception {
     }
 
     @Test

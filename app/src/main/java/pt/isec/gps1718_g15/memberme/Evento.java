@@ -59,8 +59,6 @@ public class Evento implements Parcelable {
 
     }
 
-
-
     // Usar este construtor com o botao Add
     public Evento (
             String name, TimePicker startTime, TimePicker endTime,
