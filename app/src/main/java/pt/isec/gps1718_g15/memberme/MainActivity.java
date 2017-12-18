@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -47,6 +48,14 @@ public class MainActivity extends Activity {
         );
 
         lvListaEventos.setAdapter(arrayAdapter);
+        lvListaEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, PopupModificarRemover.class);
+                intent.putExtra("pos", i);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<Evento> criarEventosParaTeste() {

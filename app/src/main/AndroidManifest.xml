@@ -17,16 +17,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".calActivity" />
-        <activity android:name=".popupwindow" android:theme="@style/AppTheme.CustomTheme" android:label="Adicionar Evento">
-        </activity>
+        <activity
+            android:name=".popupwindow"
+            android:label="Adicionar Evento"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
 
         <receiver
-            android:name="pt.isec.gps1718_g15.memberme.AlarmReceiver"
+            android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="false" >
-        </receiver>
+            android:exported="false"></receiver>
+
+        <activity
+            android:name=".PopupModificarRemover"
+            android:label="Modificar/Remover Evento"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
     </application>
-
-
 
 </manifest>

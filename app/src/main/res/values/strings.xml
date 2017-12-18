@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Member.me</string>
+    <string name="title_activity_popup_modificar_remover">PopupModificarRemover</string>
 </resources>
