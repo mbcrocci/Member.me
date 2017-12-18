@@ -42,7 +42,7 @@ public class popupwindow extends Activity {
         EditText vName = findViewById(R.id.edTitulo);
         String name = vName.getText().toString();
 
-        TimePicker startTimePciker = findViewById(R.id.startTimePickerAdd);
+        TimePicker startTimePicker = findViewById(R.id.startTimePickerAdd);
         TimePicker endTimePicker = findViewById(R.id.endTimePickerAdd);
         DatePicker datePicker = findViewById(R.id.datePickerAdd);
 
@@ -53,7 +53,7 @@ public class popupwindow extends Activity {
 
         Evento evento = new Evento(
                 name,
-                startTimePciker,
+                startTimePicker,
                 endTimePicker,
                 datePicker,
                 despertador.isChecked(),
@@ -61,7 +61,7 @@ public class popupwindow extends Activity {
                 repetir.isChecked()
         );
 
-        ArrayList<Evento> listaEventos = getIntent().getExtras().getParcelableArrayList("lista-eventos");
+        ArrayList<Evento> listaEventos = MainActivity.readListaEventoFromDisk(this);
 
         listaEventos.add(evento);
 

@@ -33,13 +33,11 @@ public class PopupModificarRemover extends Activity {
 
         try {
             int pos = (int) getIntent().getExtras().get("pos");
-
             listaEventos.remove(pos);
-
 
         } catch (Exception e) {
 
-            String name = (String) getIntent().getExtras().get("name");
+            final String name = (String) getIntent().getExtras().get("name");
             Evento evento = null;
 
             for (Evento ev : listaEventos) {

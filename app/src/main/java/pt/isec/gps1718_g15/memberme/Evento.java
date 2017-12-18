@@ -12,21 +12,21 @@ public class Evento implements Parcelable {
     private static int id = 0;
     String name;
 
-    int hourStart;
-    int minStart;
-    int dayStart;
-    int monthStart;
-    int yearStart;
+    private int hourStart;
+    private int minStart;
+    private int dayStart;
+    private int monthStart;
+    private int yearStart;
 
-    int hourEnd;
-    int minEnd;
-    int dayEnd;
-    int monthEnd;
-    int yearEnd;
+    private int hourEnd;
+    private int minEnd;
+    private int dayEnd;
+    private int monthEnd;
+    private int yearEnd;
 
-    boolean despertador;
-    boolean repetirEvento;
-    boolean naoMeChateies;
+    private boolean despertador;
+    private boolean repetirEvento;
+    private boolean naoMeChateies;
 
 
     public Evento(
@@ -65,7 +65,7 @@ public class Evento implements Parcelable {
             DatePicker date,
             boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
 
-        this.id++;
+        id++;
         this.name = name;
 
         this.hourStart = startTime.getCurrentHour();
