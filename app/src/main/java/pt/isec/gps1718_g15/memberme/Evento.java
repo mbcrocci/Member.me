@@ -177,6 +177,73 @@ public class Evento implements Parcelable {
         return yearEnd;
     }
 
+    public boolean getDespertador() {
+        return despertador;
+    }
+
+    public boolean getRepetirEvento() {
+        return repetirEvento;
+    }
+
+    public boolean getNaoMeChateies() {
+        return naoMeChateies;
+    }
+
+
+    // Setter Global - Faz o mesmo que o primeiro contructor mas nao cria um objecto novo
+    // criado para rapidez de desenvolvimento
+    public void setValues(
+            String name, int hourStart, int minStart,
+            int dayStart, int monthStart, int yearStart,
+            int hourEnd, int minEnd,
+            int dayEnd, int monthEnd, int yearEnd,
+            boolean despertador, boolean repetirEvento, boolean naoMeChateies) {
+
+        this.name = name;
+
+        this.hourStart = hourStart;
+        this.minStart = minStart;
+        this.dayStart = dayStart;
+        this.monthStart = monthStart+1;
+        this.yearStart = yearStart;
+
+        if (yearEnd < yearStart)
+            this.yearEnd = yearStart;
+        else
+            this.yearEnd = yearEnd;
+
+        if (this.yearEnd == this.yearStart
+                && monthEnd < this.monthStart)
+            this.monthEnd = monthStart;
+        else
+            this.monthEnd = monthEnd;
+
+        if (this.yearEnd == this.yearStart
+                && this.monthEnd == this.monthStart
+                && dayEnd < this.dayStart)
+            this.dayEnd = this.dayStart;
+        else
+            this.dayEnd = dayEnd;
+
+        if (hourEnd < hourStart)
+            this.hourEnd = hourStart + 1;
+        else
+            this.hourEnd = hourEnd;
+
+        if (this.hourStart == this.hourEnd && minEnd < minStart) {
+            if (minStart + 30 >= 60)
+                this.minEnd = (minStart + 30) - 60;
+            else
+                this.minEnd = minStart + 30;
+        } else {
+            this.minEnd = minEnd;
+        }
+
+        this.despertador = despertador;
+        this.repetirEvento = repetirEvento;
+        this.naoMeChateies = naoMeChateies;
+    }
+
     // Coverte Eveonto um WeekViewEvent para ser visualizado no calendario
     public WeekViewEvent toWeekViewEvent() {
        WeekViewEvent weekViewEvent = new WeekViewEvent(

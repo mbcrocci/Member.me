@@ -25,7 +25,19 @@ public class PopupModificarRemover extends Activity {
     }
 
     public void modificarEvento(View v) {
+        Intent intent = new Intent(this, popupwindow.class);
+        intent.putExtra("Editing", true);
 
+        try {
+            int pos = (int) getIntent().getExtras().get("pos");
+            intent.putExtra("pos", pos);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        startActivity(intent);
+        finish();
     }
 
     public void removerEvento(View v) {

@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,9 @@ import java.util.Calendar;
 
 public class popupwindow extends Activity {
 
+    Boolean editing;
+    int pos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +36,42 @@ public class popupwindow extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width*.8),(int)(height*.7));
+
+        editing = getIntent().getExtras().getBoolean("Editing");
+
+        if ( editing ) {
+            try {
+                pos = (int) getIntent().getExtras().get("pos");
+                Evento evento = MainActivity.readListaEventoFromDisk(this).get(pos);
+
+                setTitle("Modificar Evento");
+
+                EditText vName = findViewById(R.id.edTitulo);
+                vName.setText(evento.getName());
+
+                TimePicker startTimePicker = findViewById(R.id.startTimePickerAdd);
+                startTimePicker.setCurrentHour( evento.getHourStart() );
+                startTimePicker.setCurrentMinute( evento.getMinStart() );
+
+                TimePicker endTimePicker = findViewById(R.id.endTimePickerAdd);
+                endTimePicker.setCurrentHour( evento.getHourEnd() );
+                endTimePicker.setCurrentMinute( evento.getMinEnd() );
+
+                DatePicker datePicker = findViewById(R.id.datePickerAdd);
+                datePicker.updateDate(evento.getYearStart(), evento.getMonthStart()-1, evento.getDayStart());
+
+                CheckBox despertador = findViewById(R.id.checkboxDespertadorAdd);
+                despertador.setChecked( evento.getDespertador() );
+
+                CheckBox naoMeChateies = findViewById(R.id.checkboxNaoMeChateiesAdd);
+                naoMeChateies.setChecked( evento.getNaoMeChateies() );
+
+                CheckBox repetir = findViewById(R.id.checkboxnRepetirAdd);
+                repetir.setChecked( evento.getRepetirEvento() );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void cancelEvent(View v) {
@@ -50,25 +90,40 @@ public class popupwindow extends Activity {
         CheckBox naoMeChateies = findViewById(R.id.checkboxNaoMeChateiesAdd);
         CheckBox repetir = findViewById(R.id.checkboxnRepetirAdd);
 
-
-        Evento evento = new Evento(
-                name,
-                startTimePicker,
-                endTimePicker,
-                datePicker,
-                despertador.isChecked(),
-                naoMeChateies.isChecked(),
-                repetir.isChecked()
-        );
-
+        Evento evento;
         ArrayList<Evento> listaEventos = MainActivity.readListaEventoFromDisk(this);
 
-        listaEventos.add(evento);
+        if ( !editing ) {
+            evento = new Evento(
+                    name,
+                    startTimePicker,
+                    endTimePicker,
+                    datePicker,
+                    despertador.isChecked(),
+                    naoMeChateies.isChecked(),
+                    repetir.isChecked()
+            );
+            listaEventos.add(evento);
+
+        } else {
+            evento = listaEventos.get(pos);
+            if (evento != null) {
+                evento.setValues(
+                        name,
+                        startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute(),
+                        datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
+                        endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute(),
+                        datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
+                        despertador.isChecked(),
+                        naoMeChateies.isChecked(),
+                        repetir.isChecked()
+                );
+            }
+        }
 
         Log.i("PopupWindowsConfirm", evento.toString());
 
         MainActivity.saveListaEventoToDisk(listaEventos, this);
-
 
         // Criar a notificacao
         if ( despertador.isChecked() ) {
