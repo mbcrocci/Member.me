@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,8 @@ public class PopupModificarRemover extends Activity {
                 listaEventos.remove(evento);
         }
         MainActivity.saveListaEventoToDisk(listaEventos, this);
+
+        Toast.makeText(this, "Evento removido com sucesso", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
