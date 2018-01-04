@@ -47,6 +47,16 @@ public class calActivity extends Activity implements WeekView.EventClickListener
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        listaEventos = MainActivity.readListaEventoFromDisk(this);
+        weekView = findViewById(R.id.weekView);
+        weekView.setOnEventClickListener(this);
+        weekView.setMonthChangeListener(this);
+        weekView.setEventLongPressListener(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = getMenuInflater(); // para criar o menu
         mi.inflate(R.menu.menu_bar_left,menu);// ir buscar o menu do xml

@@ -106,6 +106,21 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         listaEventos = readListaEventoFromDisk(this);
+        ArrayAdapter<Evento> arrayAdapter = new ArrayAdapter<Evento>(
+                this,
+                android.R.layout.simple_list_item_1,
+                listaEventos
+        );
+
+        lvListaEventos.setAdapter(arrayAdapter);
+        lvListaEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(MainActivity.this, PopupModificarRemover.class);
+                intent.putExtra("pos", i);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
