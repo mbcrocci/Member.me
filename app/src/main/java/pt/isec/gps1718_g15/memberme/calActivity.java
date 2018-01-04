@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.MonthLoader;
@@ -63,6 +64,15 @@ public class calActivity extends Activity implements WeekView.EventClickListener
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void addEvent(View v)
+    {
+        Intent intent = new Intent(calActivity.this, popupwindow.class)
+                .putParcelableArrayListExtra("lista-eventos", listaEventos);
+
+        startActivity(intent);
+        
     }
 
     // Metodos copiados de https://github.com/alamkanak/Android-Week-View/blob/master/sample/src/main/java/com/alamkanak/weekview/sample/BaseActivity.java
