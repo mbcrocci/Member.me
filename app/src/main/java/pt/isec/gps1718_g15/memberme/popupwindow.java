@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,70 +94,73 @@ public class popupwindow extends Activity {
         Evento evento;
         ArrayList<Evento> listaEventos = MainActivity.readListaEventoFromDisk(this);
 
-        if ( !editing ) {
-            evento = new Evento(
-                    name,
-                    startTimePicker,
-                    endTimePicker,
-                    datePicker,
-                    despertador.isChecked(),
-                    naoMeChateies.isChecked(),
-                    repetir.isChecked()
-            );
-            listaEventos.add(evento);
-
-        } else {
-            evento = listaEventos.get(pos);
-            if (evento != null) {
-                evento.setValues(
+        if ( name.matches("") ) {
+            if (!editing) {
+                evento = new Evento(
                         name,
-                        startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute(),
-                        datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
-                        endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute(),
-                        datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
+                        startTimePicker,
+                        endTimePicker,
+                        datePicker,
                         despertador.isChecked(),
                         naoMeChateies.isChecked(),
                         repetir.isChecked()
                 );
-            }
-        }
+                listaEventos.add(evento);
 
-        Log.i("PopupWindowsConfirm", evento.toString());
+                MainActivity.saveListaEventoToDisk(listaEventos, this);
 
-        MainActivity.saveListaEventoToDisk(listaEventos, this);
+                // Criar a notificacao
+                if (despertador.isChecked()) {
+                    Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+                    alarmIntent.putExtra("evento", evento);
 
-        // Criar a notificacao
-        if ( despertador.isChecked() ) {
-            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-            alarmIntent.putExtra("evento", evento);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                            this, 0, alarmIntent, 0);
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                    this, 0, alarmIntent, 0);
+                    AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-            AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
+                    if (evento.getMinStart() - 30 > 0) {
+                        calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart());
+                        calendar.set(Calendar.MINUTE, evento.getMinStart() - 30);
+                    } else {
+                        calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart() - 1);
+                        calendar.set(Calendar.MINUTE, 30 - (evento.getMinStart() - 30));
+                    }
+                    calendar.set(Calendar.DAY_OF_MONTH, evento.getDayStart());
+                    calendar.set(Calendar.MONTH, evento.getMonthStart());
+                    calendar.set(Calendar.YEAR, evento.getYearStart());
 
-            if (evento.getMinStart() - 30 > 0) {
-                calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart());
-                calendar.set(Calendar.MINUTE, evento.getMinStart() - 30);
+                    manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                }
+
             } else {
-                calendar.set(Calendar.HOUR_OF_DAY, evento.getHourStart() - 1);
-                calendar.set(Calendar.MINUTE, 30 - (evento.getMinStart() - 30));
+                evento = listaEventos.get(pos);
+                if (evento != null) {
+                    evento.setValues(
+                            name,
+                            startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute(),
+                            datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
+                            endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute(),
+                            datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear(),
+                            despertador.isChecked(),
+                            naoMeChateies.isChecked(),
+                            repetir.isChecked()
+                    );
+                }
+
+                MainActivity.saveListaEventoToDisk(listaEventos, this);
+
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-            calendar.set(Calendar.DAY_OF_MONTH, evento.getDayStart());
-            calendar.set(Calendar.MONTH, evento.getMonthStart());
-            calendar.set(Calendar.YEAR, evento.getYearStart());
+        } else {
+            Toast.makeText(this, "Descricao: Preenchimento Obrigatório ", Toast.LENGTH_SHORT).show();
 
-            manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }
-
-        Intent intent = new Intent(this, MainActivity.class).
-                putParcelableArrayListExtra("lista_eventos", listaEventos);
-
-        startActivity(intent);
-        finish();
     }
 }
 
