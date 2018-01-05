@@ -8,6 +8,7 @@
     android:background="@color/grey">
 
     <LinearLayout
+        android:id="@+id/llPopup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -89,6 +90,13 @@
             android:layout_height="wrap_content"
             android:text="Repetir"
             android:textSize="20sp"/>
+
+        <Spinner
+            android:id="@+id/spinner_weekcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

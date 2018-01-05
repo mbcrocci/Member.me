@@ -2,6 +2,7 @@ package pt.isec.gps1718_g15.memberme;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,10 +10,18 @@ import android.os.Bundle;
 import android.text.BoringLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -36,11 +45,11 @@ public class popupwindow extends Activity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.8),(int)(height*.7));
+        getWindow().setLayout((int) (width * .8), (int) (height * .7));
 
         editing = getIntent().getExtras().getBoolean("Editing");
 
-        if ( editing ) {
+        if (editing) {
             try {
                 pos = (int) getIntent().getExtras().get("pos");
                 Evento evento = MainActivity.readListaEventoFromDisk(this).get(pos);
@@ -51,28 +60,52 @@ public class popupwindow extends Activity {
                 vName.setText(evento.getName());
 
                 TimePicker startTimePicker = findViewById(R.id.startTimePickerAdd);
-                startTimePicker.setCurrentHour( evento.getHourStart() );
-                startTimePicker.setCurrentMinute( evento.getMinStart() );
+                startTimePicker.setCurrentHour(evento.getHourStart());
+                startTimePicker.setCurrentMinute(evento.getMinStart());
 
                 TimePicker endTimePicker = findViewById(R.id.endTimePickerAdd);
-                endTimePicker.setCurrentHour( evento.getHourEnd() );
-                endTimePicker.setCurrentMinute( evento.getMinEnd() );
+                endTimePicker.setCurrentHour(evento.getHourEnd());
+                endTimePicker.setCurrentMinute(evento.getMinEnd());
 
                 DatePicker datePicker = findViewById(R.id.datePickerAdd);
-                datePicker.updateDate(evento.getYearStart(), evento.getMonthStart()-1, evento.getDayStart());
+                datePicker.updateDate(evento.getYearStart(), evento.getMonthStart() - 1, evento.getDayStart());
 
                 CheckBox despertador = findViewById(R.id.checkboxDespertadorAdd);
-                despertador.setChecked( evento.getDespertador() );
+                despertador.setChecked(evento.getDespertador());
 
                 CheckBox naoMeChateies = findViewById(R.id.checkboxNaoMeChateiesAdd);
-                naoMeChateies.setChecked( evento.getNaoMeChateies() );
+                naoMeChateies.setChecked(evento.getNaoMeChateies());
 
                 CheckBox repetir = findViewById(R.id.checkboxnRepetirAdd);
-                repetir.setChecked( evento.getRepetirEvento() );
+                repetir.setChecked(evento.getRepetirEvento());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        CheckBox repetir = findViewById(R.id.checkboxnRepetirAdd);
+
+        repetir.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Spinner spinner = findViewById(R.id.spinner_weekcount);
+                    String[] items = new String[]{"Todos os dias.", "Todos as semanas.", "Todos os meses."};
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                            popupwindow.this,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            items
+                    );
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+                    spinner.setVisibility(View.VISIBLE);
+
+                } else {
+                    Spinner spinner = findViewById(R.id.spinner_weekcount);
+                    spinner.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public void cancelEvent(View v) {
@@ -94,7 +127,7 @@ public class popupwindow extends Activity {
         Evento evento;
         ArrayList<Evento> listaEventos = MainActivity.readListaEventoFromDisk(this);
 
-        if ( name.matches("") ) {
+        if ( !name.matches("") ) {
             if (!editing) {
                 evento = new Evento(
                         name,
@@ -136,6 +169,81 @@ public class popupwindow extends Activity {
                     manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
 
+                if (repetir.isChecked()) {
+                    Spinner spinner = findViewById(R.id.spinner_weekcount);
+                    String str = (String) spinner.getSelectedItem();
+
+                    switch (str) {
+                        case "Todos os dias.":
+                            for (int i = 0; i < 7; i++) {
+                                datePicker.updateDate(
+                                        datePicker.getYear(),
+                                        datePicker.getMonth(),
+                                        datePicker.getDayOfMonth()+1
+                                );
+
+                                Evento eventoRepetido = new Evento(
+                                        name,
+                                        startTimePicker,
+                                        endTimePicker,
+                                        datePicker,
+                                        despertador.isChecked(),
+                                        naoMeChateies.isChecked(),
+                                        repetir.isChecked()
+                                );
+                                listaEventos.add(eventoRepetido);
+                            }
+                            break;
+
+                        case "Todos as semanas.":
+                            for (int i = 0; i < 4; i++) {
+                                datePicker.updateDate(
+                                        datePicker.getYear(),
+                                        datePicker.getMonth(),
+                                        datePicker.getDayOfMonth()+7
+                                );
+
+                                Evento eventoRepetido = new Evento(
+                                        name,
+                                        startTimePicker,
+                                        endTimePicker,
+                                        datePicker,
+                                        despertador.isChecked(),
+                                        naoMeChateies.isChecked(),
+                                        repetir.isChecked()
+                                );
+                                listaEventos.add(eventoRepetido);
+                            }
+                            break;
+
+                        case "Todos os meses.":
+                            for (int i = 0; i < 6; i++) {
+                                datePicker.updateDate(
+                                        datePicker.getYear(),
+                                        datePicker.getMonth()+1,
+                                        datePicker.getDayOfMonth()
+                                );
+
+                                Evento eventoRepetido = new Evento(
+                                        name,
+                                        startTimePicker,
+                                        endTimePicker,
+                                        datePicker,
+                                        despertador.isChecked(),
+                                        naoMeChateies.isChecked(),
+                                        repetir.isChecked()
+                                );
+                                listaEventos.add(eventoRepetido);
+                            }
+                            break;
+                    }
+                }
+
+                MainActivity.saveListaEventoToDisk(listaEventos, this);
+
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
             } else {
                 evento = listaEventos.get(pos);
                 if (evento != null) {
